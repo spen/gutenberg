@@ -11,7 +11,13 @@ import {
 	getEntityRecords,
 	getEmbedPreview,
 	isPreviewEmbedFallback,
+<<<<<<< HEAD
 	canUser,
+=======
+	getAutosave,
+	hasAutosave,
+	getAutosaveAttribute,
+>>>>>>> Refactor autosave state into core-data
 } from '../selectors';
 
 describe( 'getEntityRecord', () => {
@@ -143,5 +149,103 @@ describe( 'canUser', () => {
 			},
 		} );
 		expect( canUser( state, 'create', 'media', 123 ) ).toBe( false );
+	} );
+} );
+
+describe( 'hasAutosave', () => {
+	it( 'returns false if there is no autosave', () => {
+		const state = { autosave: {} };
+		const result = hasAutosave( state, 1 );
+
+		expect( result ).toBe( false );
+	} );
+
+	it( 'returns true if there is an autosave', () => {
+		const postId = 1;
+		const state = {
+			autosave: {
+				[ postId ]: { title: '', excerpt: '', content: '' },
+			},
+		};
+
+		const result = hasAutosave( state, postId );
+
+		expect( result ).toBe( true );
+	} );
+} );
+
+describe( 'getAutosave', () => {
+	it( 'returns undefined for the provided post id if no autosave exists for it in state', () => {
+		const autosave = { title: '', excerpt: '', content: '' };
+		const state = {
+			autosave: {
+				1: autosave,
+			},
+		};
+
+		const result = getAutosave( state, 2 );
+
+		expect( result ).toBeUndefined();
+	} );
+
+	it( 'returns the autosave for the provided post id, if it exists in state', () => {
+		const postId = 1;
+		const autosave = { title: '', excerpt: '', content: '' };
+		const state = {
+			autosave: {
+				[ postId ]: autosave,
+			},
+		};
+
+		const result = getAutosave( state, postId );
+
+		expect( result ).toEqual( autosave );
+	} );
+} );
+
+describe( 'getAutosaveAttribute', () => {
+	it( 'returns undefined if there is no autosave', () => {
+		const state = {
+			autosave: {},
+		};
+
+		expect( getAutosaveAttribute( state, 1, 'title' ) ).toBeUndefined();
+	} );
+
+	it( 'returns undefined for an attribute which is not set', () => {
+		const postId = 1;
+		const autosave = { bar: true };
+		const state = {
+			autosave: {
+				[ postId ]: autosave,
+			},
+		};
+
+		expect( getAutosaveAttribute( state, postId, 'foo' ) ).toBeUndefined();
+	} );
+
+	it( 'returns undefined for object prototype member', () => {
+		const postId = 1;
+		const state = {
+			autosave: {
+				[ postId ]: {},
+			},
+		};
+
+		expect( getAutosaveAttribute( state, postId, 'valueOf' ) ).toBeUndefined();
+	} );
+
+	it( 'returns the attribute value', () => {
+		const postId = 1;
+		const autosave = {
+			title: 'Hello World',
+		};
+		const state = {
+			autosave: {
+				[ postId ]: autosave,
+			},
+		};
+
+		expect( getAutosaveAttribute( state, postId, 'title' ) ).toBe( autosave.title );
 	} );
 } );
