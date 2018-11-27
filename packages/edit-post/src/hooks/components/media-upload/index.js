@@ -80,6 +80,7 @@ class MediaUpload extends Component {
 		allowedTypes,
 		multiple = false,
 		gallery = false,
+		addToGallery = false,
 		title = __( 'Select or Upload Media' ),
 		modalClass,
 		value,
@@ -92,7 +93,12 @@ class MediaUpload extends Component {
 		this.onClose = this.onClose.bind( this );
 
 		if ( gallery ) {
-			const currentState = value ? 'gallery-edit' : 'gallery';
+			let currentState;
+			if ( addToGallery ) {
+				currentState = 'gallery-library';
+			} else {
+				currentState = value ? 'gallery-edit' : 'gallery';
+			}
 			const GalleryDetailsMediaFrame = getGalleryDetailsMediaFrame();
 			const attachments = getAttachmentsCollection( value );
 			const selection = new wp.media.model.Selection( attachments.models, {

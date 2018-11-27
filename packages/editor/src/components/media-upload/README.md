@@ -101,6 +101,17 @@ CSS class added to the media modal frame.
 - Type: `String`
 - Required: No
 
+
+### addToGallery
+
+If true the gallery media modal will open in directly in the media library where additional images can be added.
+If false the gallery media modal will open in the edit mode where existing images can be edited.
+Only applies if gallery = true.
+
+- Type: `Boolean`
+- Required: No
+- Default: `false`
+
 ## render
 
 A callback invoked to render the Button opening the media library.
