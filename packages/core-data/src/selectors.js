@@ -36,7 +36,7 @@ function isResolving( selectorName, ...args ) {
  * @param {string} selectorName Core data selector name.
  * @param {...*}   args         Arguments passed to selector.
  *
- * @return {boolean} Whether resolution is in progress.
+ * @return {boolean} Whether resolution has finished.
  */
 function hasFinishedResolution( selectorName, ...args ) {
 	return select( 'core/data' ).hasFinishedResolution( REDUCER_KEY, selectorName, args );
@@ -231,7 +231,7 @@ export function canUser( state, action, resource, id ) {
 
 /**
  * Returns an attribute value of the current autosave revision for a post, or
- * null if there is no autosave for the post.
+ * undefined if there is no autosave for the post.
  *
  * @param {Object} state         State tree.
  * @param {Object} post          The parent post of the autosave.
@@ -251,12 +251,12 @@ export function getAutosaveAttribute( state, post, attributeName ) {
 }
 
 /**
- * Returns the autosave associated with the provided postId.
+ * Returns the autosave that is a child of the provided post, if one exists.
  *
  * @param {Object} state State tree.
  * @param {Object} post  The parent post of the autosave.
  *
- * @return {?Object} The autosave object, if it exists.
+ * @return {?Object} The autosave object, or undefined if there is none.
  */
 export function getAutosave( state, post ) {
 	if ( state.autosave ) {
@@ -265,7 +265,7 @@ export function getAutosave( state, post ) {
 }
 
 /**
- * Returns the true if there is an autosave for the given post id, otherwise false.
+ * Returns the true if there is an autosave for the given post, otherwise false.
  *
  * @param {Object} state State tree.
  * @param {Object} post  The parent post of the autosave.

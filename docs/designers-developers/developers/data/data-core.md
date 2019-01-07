@@ -184,7 +184,7 @@ Whether or not the user can perform the action,
 ### getAutosaveAttribute
 
 Returns an attribute value of the current autosave revision for a post, or
-null if there is no autosave for the post.
+undefined if there is no autosave for the post.
 
 *Parameters*
 
@@ -198,7 +198,7 @@ Autosave attribute value.
 
 ### getAutosave
 
-Returns the autosave associated with the provided postId.
+Returns the autosave that is a child of the provided post, if one exists.
 
 *Parameters*
 
@@ -207,11 +207,11 @@ Returns the autosave associated with the provided postId.
 
 *Returns*
 
-The autosave object, if it exists.
+The autosave object, or undefined if there is none.
 
 ### hasAutosave
 
-Returns the true if there is an autosave for the given post id, otherwise false.
+Returns the true if there is an autosave for the given post, otherwise false.
 
 *Parameters*
 
