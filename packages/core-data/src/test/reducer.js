@@ -155,7 +155,7 @@ describe( 'autosave', () => {
 			excerpt: 'autosave',
 		};
 		const state = autosave( { 1: existingAutosave }, {
-			type: 'RESET_AUTOSAVE',
+			type: 'RECEIVE_AUTOSAVE',
 			postId: 2,
 			autosave: {
 				title: {

@@ -169,9 +169,9 @@ export function receiveUserPermission( key, isAllowed ) {
  *
  * @return {Object} Action object.
  */
-export function resetAutosave( postId, autosave ) {
+export function receiveAutosave( postId, autosave ) {
 	return {
-		type: 'RESET_AUTOSAVE',
+		type: 'RECEIVE_AUTOSAVE',
 		postId,
 		autosave,
 	};

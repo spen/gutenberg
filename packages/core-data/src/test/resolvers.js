@@ -1,14 +1,9 @@
 /**
  * Internal dependencies
  */
-<<<<<<< HEAD
-import { getEntityRecord, getEntityRecords, getEmbedPreview, canUser } from '../resolvers';
-import { receiveEntityRecords, receiveEmbedPreview, receiveUserPermission } from '../actions';
+import { getEntityRecord, getEntityRecords, getEmbedPreview, canUser, getAutosave } from '../resolvers';
+import { receiveEntityRecords, receiveEmbedPreview, receiveUserPermission, receiveAutosave } from '../actions';
 import { apiFetch } from '../controls';
-=======
-import { getEntityRecord, getEntityRecords, getEmbedPreview, getAutosave } from '../resolvers';
-import { receiveEntityRecords, receiveEmbedPreview, resetAutosave } from '../actions';
->>>>>>> Add a resolver for fetching autosave data
 
 describe( 'getEntityRecord', () => {
 	const POST_TYPE = { slug: 'post' };
@@ -188,7 +183,7 @@ describe( 'getAutosave', () => {
 
 		// Provide apiFetch response and trigger Action
 		const received = ( await fulfillment.next( SUCCESSFUL_RESPONSE ) ).value;
-		expect( received ).toEqual( resetAutosave( 1, SUCCESSFUL_RESPONSE[ 0 ] ) );
+		expect( received ).toEqual( receiveAutosave( 1, SUCCESSFUL_RESPONSE[ 0 ] ) );
 	} );
 
 	it( 'yields undefined if no autosave existings for the post', async () => {

@@ -299,7 +299,7 @@ permission to perform an action on a REST resource.
  * key: A key that represents the action and REST resource.
  * isAllowed: Whether or not the user can perform the action.
 
-### resetAutosave
+### receiveAutosave
 
 Returns an action object used in signalling that the latest autosave of the
 post has been received, by initialization or autosave.
