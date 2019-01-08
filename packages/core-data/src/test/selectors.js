@@ -151,12 +151,15 @@ describe( 'canUser', () => {
 describe( 'hasAutosave', () => {
 	it( 'returns false if there is no autosave', () => {
 		const state = { autosave: {} };
-		const result = hasAutosave( state, { id: 1 } );
+		const postType = 'post';
+		const postId = 1;
+		const result = hasAutosave( state, postType, postId );
 
 		expect( result ).toBe( false );
 	} );
 
 	it( 'returns true if there is an autosave', () => {
+		const postType = 'post';
 		const postId = 1;
 		const state = {
 			autosave: {
@@ -164,7 +167,7 @@ describe( 'hasAutosave', () => {
 			},
 		};
 
-		const result = hasAutosave( state, { id: postId } );
+		const result = hasAutosave( state, postType, postId );
 
 		expect( result ).toBe( true );
 	} );
@@ -172,6 +175,8 @@ describe( 'hasAutosave', () => {
 
 describe( 'getAutosave', () => {
 	it( 'returns undefined for the provided post id if no autosave exists for it in state', () => {
+		const postType = 'post';
+		const postId = 2;
 		const autosave = { title: '', excerpt: '', content: '' };
 		const state = {
 			autosave: {
@@ -179,12 +184,13 @@ describe( 'getAutosave', () => {
 			},
 		};
 
-		const result = getAutosave( state, { id: 2 } );
+		const result = getAutosave( state, postType, postId );
 
 		expect( result ).toBeUndefined();
 	} );
 
 	it( 'returns the autosave for the provided post id, if it exists in state', () => {
+		const postType = 'post';
 		const postId = 1;
 		const autosave = { title: '', excerpt: '', content: '' };
 		const state = {
@@ -193,7 +199,7 @@ describe( 'getAutosave', () => {
 			},
 		};
 
-		const result = getAutosave( state, { id: postId } );
+		const result = getAutosave( state, postType, postId );
 
 		expect( result ).toEqual( autosave );
 	} );

@@ -174,14 +174,14 @@ export function* canUser( action, resource, id ) {
 /**
  * Request autosave data from the REST API.
  *
- * @param {Object} post The post that is the parent of the autosave.
+ * @param {string} postType The type of the parent post.
+ * @param {number} postId   The id of the parent post.
  */
-export function* getAutosave( post ) {
-	const { id, type } = post;
-	const { baseURL } = yield select( 'getEntity', 'postType', type );
-	const autosaveResponse = yield apiFetch( { path: `${ baseURL }/${ id }/autosaves?context=edit` } );
+export function* getAutosave( postType, postId ) {
+	const { baseURL } = yield select( 'getEntity', 'postType', postType );
+	const autosaveResponse = yield apiFetch( { path: `${ baseURL }/${ postId }/autosaves?context=edit` } );
 
 	if ( autosaveResponse && autosaveResponse[ 0 ] ) {
-		yield receiveAutosave( id, autosaveResponse[ 0 ] );
+		yield receiveAutosave( postId, autosaveResponse[ 0 ] );
 	}
 }
