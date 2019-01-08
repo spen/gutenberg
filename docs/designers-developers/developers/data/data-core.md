@@ -181,21 +181,6 @@ https://developer.wordpress.org/rest-api/reference/
 Whether or not the user can perform the action,
                             or `undefined` if the OPTIONS request is still being made.
 
-### getAutosaveAttribute
-
-Returns an attribute value of the current autosave revision for a post, or
-undefined if there is no autosave for the post.
-
-*Parameters*
-
- * state: State tree.
- * post: The parent post of the autosave.
- * attributeName: Autosave attribute name.
-
-*Returns*
-
-Autosave attribute value.
-
 ### getAutosave
 
 Returns the autosave that is a child of the provided post, if one exists.

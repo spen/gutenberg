@@ -230,27 +230,6 @@ export function canUser( state, action, resource, id ) {
 }
 
 /**
- * Returns an attribute value of the current autosave revision for a post, or
- * undefined if there is no autosave for the post.
- *
- * @param {Object} state         State tree.
- * @param {Object} post          The parent post of the autosave.
- * @param {string} attributeName Autosave attribute name.
- *
- * @return {*} Autosave attribute value.
- */
-export function getAutosaveAttribute( state, post, attributeName ) {
-	if ( ! hasAutosave( state, post ) ) {
-		return;
-	}
-
-	const autosave = getAutosave( state, post );
-	if ( autosave.hasOwnProperty( attributeName ) ) {
-		return autosave[ attributeName ];
-	}
-}
-
-/**
  * Returns the autosave that is a child of the provided post, if one exists.
  *
  * @param {Object} state State tree.
