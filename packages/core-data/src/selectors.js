@@ -230,7 +230,7 @@ export function canUser( state, action, resource, id ) {
 }
 
 /**
- * Returns the autosave that is a child of the provided post, if one exists.
+ * Returns the autosave that is a child of the provided post id, if one exists.
  *
  * @param {Object} state    State tree.
  * @param {string} postType The type of the parent post.
