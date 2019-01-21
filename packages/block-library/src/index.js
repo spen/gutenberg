@@ -32,6 +32,7 @@ import * as html from './html';
 import * as mediaText from './media-text';
 import * as latestComments from './latest-comments';
 import * as latestPosts from './latest-posts';
+import * as legacyWidget from './legacy-widget';
 import * as list from './list';
 import * as missing from './missing';
 import * as more from './more';
@@ -84,6 +85,7 @@ export const registerCoreBlocks = () => {
 		mediaText,
 		latestComments,
 		latestPosts,
+		legacyWidget,
 		missing,
 		more,
 		nextpage,
