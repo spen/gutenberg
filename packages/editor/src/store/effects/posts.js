@@ -326,4 +326,3 @@ export const refreshPost = async ( action, store ) => {
 	} );
 	dispatch( resetPost( newPost ) );
 };
-
