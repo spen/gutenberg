@@ -183,7 +183,7 @@ Whether or not the user can perform the action,
 
 ### getAutosave
 
-Returns the autosave that is a child of the provided post id, if one exists.
+Returns the latest autosave that is a child of the provided post id, if one exists.
 
 *Parameters*
 
