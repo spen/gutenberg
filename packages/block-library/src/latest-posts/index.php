@@ -35,7 +35,7 @@ function render_block_core_latest_posts( $attributes ) {
 			$title = __( '(Untitled)' );
 		}
 		$list_items_markup .= sprintf(
-			'<li><a href="%1$s">%2$s</a>',
+			'<li><a href="%1$s">mmm %2$s</a>',
 			esc_url( get_permalink( $post ) ),
 			esc_html( $title )
 		);
@@ -127,5 +127,4 @@ function register_block_core_latest_posts() {
 		)
 	);
 }
-
 add_action( 'init', 'register_block_core_latest_posts' );
