@@ -2,7 +2,7 @@
 
 ## Braking change
 
-- Plugin updated to include `@wordpress/babel-plugin-import-jsx-pragma` plugin integration.
+- Preset updated to include `@wordpress/babel-plugin-import-jsx-pragma` plugin integration ([#13540](https://github.com/WordPress/gutenberg/pull/13540)).
 
 ## 3.0.0 (2018-09-30)
 
