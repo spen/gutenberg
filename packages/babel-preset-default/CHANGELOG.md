@@ -1,3 +1,9 @@
+## 4.0.0 (Unreleased)
+
+## Braking change
+
+- Plugin updated to include `@wordpress/babel-plugin-import-jsx-pragma` plugin integration.
+
 ## 3.0.0 (2018-09-30)
 
 ## Breaking Change
