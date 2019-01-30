@@ -108,9 +108,9 @@ export default class ImageEdit extends React.Component {
 		const { url, caption, height, width } = attributes;
 
 		const onMediaLibraryButtonPressed = () => {
-			requestMediaPickFromMediaLibrary( ( mediaId, mediaUrl ) => {
+			requestMediaPickFromMediaLibrary( ( mediaUrl ) => {
 				if ( mediaUrl ) {
-					setAttributes( { id: mediaId, url: mediaUrl } );
+					setAttributes( { url: mediaUrl } );
 				}
 			} );
 		};
