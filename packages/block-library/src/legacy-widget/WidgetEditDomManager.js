@@ -13,6 +13,8 @@ class WidgetEditDomManager extends Component {
 		super( ...arguments );
 
 		this.containerRef = createRef();
+		this.formRef = createRef();
+		this.widgetContentRef = createRef();
 		this.triggerWidgetEvent = this.triggerWidgetEvent.bind( this );
 	}
 
@@ -23,8 +25,8 @@ class WidgetEditDomManager extends Component {
 	shouldComponentUpdate( nextProps ) {
 		// We can not leverage react render otherwise we would destroy dom changes applied by the plugins.
 		// We manually update the required dom node replicating what the widget screen and the customizer do.
-		if ( nextProps.form !== this.props.form && this.containerRef.current ) {
-			const widgetContent = this.containerRef.current.querySelector( '.widget-content' );
+		if ( nextProps.form !== this.props.form && this.widgetContentRef.current ) {
+			const widgetContent = this.widgetContentRef.current;
 			widgetContent.innerHTML = nextProps.form;
 			this.triggerWidgetEvent( 'widget-updated' );
 		}
@@ -36,9 +38,18 @@ class WidgetEditDomManager extends Component {
 		return (
 			<div className="widget open" ref={ this.containerRef }>
 				<div className="widget-inside">
-					<form method="post">
-						<div className="widget-content" dangerouslySetInnerHTML={ { __html: form } }>
-						</div>
+					<form
+						ref={ this.formRef }
+						method="post"
+						onBlur={ () => {
+							//console.log( 'blur' );
+						} }
+					>
+						<div
+							ref={ this.widgetContentRef }
+							className="widget-content"
+							dangerouslySetInnerHTML={ { __html: form } }
+						/>
 						<input type="hidden" name="widget-id" className="widget-id" value={ id } />
 						<input type="hidden" name="id_base" className="id_base" value={ idBase } />
 						<input type="hidden" name="widget_number" className="widget_number" value={ widgetNumber } />
@@ -58,24 +69,30 @@ class WidgetEditDomManager extends Component {
 	}
 
 	retrieveUpdatedInstance() {
-		if ( this.containerRef.current ) {
+		if ( this.formRef.current ) {
 			const { idBase, widgetNumber } = this.props;
-			const form = this.containerRef.current.querySelector( 'form' );
+			const form = this.formRef.current;
 			const formData = new window.FormData( form );
 			const updatedInstance = {};
 			const keyPrefixLength = `widget-${ idBase }[${ widgetNumber }][`.length;
 			const keySuffixLength = `]`.length;
-			for ( const [ rawKey, value ] of formData ) {
-				const keyParsed = rawKey.substring( keyPrefixLength, rawKey.length - keySuffixLength );
+			for ( const rawKey of formData.keys() ) {
 				// This fields are added to the form because the widget JavaScript code may use this values.
 				// They are not relevant for the update mechanism.
 				if ( includes(
 					[ 'widget-id', 'id_base', 'widget_number', 'multi_number', 'add_new' ],
-					keyParsed,
+					rawKey,
 				) ) {
 					continue;
 				}
-				updatedInstance[ keyParsed ] = value;
+				const keyParsed = rawKey.substring( keyPrefixLength, rawKey.length - keySuffixLength );
+
+				const value = formData.getAll( rawKey );
+				if ( value.length > 1 ) {
+					updatedInstance[ keyParsed ] = value;
+				} else {
+					updatedInstance[ keyParsed ] = value[ 0 ];
+				}
 			}
 			return updatedInstance;
 		}
