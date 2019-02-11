@@ -87,13 +87,14 @@ class EditorProvider extends Component {
 			onMetaChange,
 			reusableBlocks,
 		} = this.props;
-		const editorSettings = this.getBlockEditorSettings(
-			settings, meta, onMetaChange, reusableBlocks
-		);
 
 		if ( ! isReady ) {
 			return null;
 		}
+
+		const editorSettings = this.getBlockEditorSettings(
+			settings, meta, onMetaChange, reusableBlocks
+		);
 
 		return (
 			<BlockEditorProvider
