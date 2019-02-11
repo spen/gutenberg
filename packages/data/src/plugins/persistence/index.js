@@ -201,6 +201,10 @@ const persistencePlugin = function( registry, pluginOptions ) {
 	};
 };
 
+/**
+ * Deprecated: Remove this function once WordPress 5.3 is released.
+ */
+
 persistencePlugin.__unstableMigrate = ( pluginOptions ) => {
 	const persistence = createPersistenceInterface( pluginOptions );
 
