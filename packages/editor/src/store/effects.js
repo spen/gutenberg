@@ -26,7 +26,7 @@ import {
 	resetBlocks,
 	setTemplateValidity,
 	insertDefaultBlock,
-} from './actions';
+} from './actions.js';
 import {
 	getBlock,
 	getBlockRootClientId,
@@ -47,14 +47,6 @@ import {
 	convertBlockToStatic,
 	receiveReusableBlocks,
 } from './effects/reusable-blocks';
-import {
-	requestPostUpdate,
-	requestPostUpdateSuccess,
-	requestPostUpdateFailure,
-	trashPost,
-	trashPostFailure,
-	refreshPost,
-} from './effects/posts';
 
 /**
  * Block validity is a function of blocks state (at the point of a
@@ -141,18 +133,6 @@ export function ensureDefaultBlock( action, store ) {
 }
 
 export default {
-	REQUEST_POST_UPDATE: ( action, store ) => {
-		requestPostUpdate( action, store );
-	},
-	REQUEST_POST_UPDATE_SUCCESS: requestPostUpdateSuccess,
-	REQUEST_POST_UPDATE_FAILURE: requestPostUpdateFailure,
-	TRASH_POST: ( action, store ) => {
-		trashPost( action, store );
-	},
-	TRASH_POST_FAILURE: trashPostFailure,
-	REFRESH_POST: ( action, store ) => {
-		refreshPost( action, store );
-	},
 	MERGE_BLOCKS( action, store ) {
 		const { dispatch } = store;
 		const state = store.getState();

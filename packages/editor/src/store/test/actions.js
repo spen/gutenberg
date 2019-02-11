@@ -14,7 +14,6 @@ import {
 	__experimentalConvertBlockToReusable as convertBlockToReusable,
 	toggleSelection,
 	setupEditor,
-	resetPost,
 	resetBlocks,
 	updateBlockAttributes,
 	updateBlock,
@@ -28,9 +27,6 @@ import {
 	insertBlocks,
 	showInsertionPoint,
 	hideInsertionPoint,
-	editPost,
-	savePost,
-	trashPost,
 	mergeBlocks,
 	redo,
 	undo,
@@ -38,7 +34,7 @@ import {
 	removeBlock,
 	toggleBlockMode,
 	updateBlockListSettings,
-} from '../actions';
+} from '../actions.js';
 
 describe( 'actions', () => {
 	describe( 'setupEditor', () => {
@@ -47,17 +43,6 @@ describe( 'actions', () => {
 			const result = setupEditor( post );
 			expect( result ).toEqual( {
 				type: 'SETUP_EDITOR',
-				post,
-			} );
-		} );
-	} );
-
-	describe( 'resetPost', () => {
-		it( 'should return the RESET_POST action', () => {
-			const post = {};
-			const result = resetPost( post );
-			expect( result ).toEqual( {
-				type: 'RESET_POST',
 				post,
 			} );
 		} );
@@ -222,44 +207,6 @@ describe( 'actions', () => {
 		it( 'should return the HIDE_INSERTION_POINT action', () => {
 			expect( hideInsertionPoint() ).toEqual( {
 				type: 'HIDE_INSERTION_POINT',
-			} );
-		} );
-	} );
-
-	describe( 'editPost', () => {
-		it( 'should return EDIT_POST action', () => {
-			const edits = { format: 'sample' };
-			expect( editPost( edits ) ).toEqual( {
-				type: 'EDIT_POST',
-				edits,
-			} );
-		} );
-	} );
-
-	describe( 'savePost', () => {
-		it( 'should return REQUEST_POST_UPDATE action', () => {
-			expect( savePost() ).toEqual( {
-				type: 'REQUEST_POST_UPDATE',
-				options: {},
-			} );
-		} );
-
-		it( 'should pass through options argument', () => {
-			expect( savePost( { autosave: true } ) ).toEqual( {
-				type: 'REQUEST_POST_UPDATE',
-				options: { autosave: true },
-			} );
-		} );
-	} );
-
-	describe( 'trashPost', () => {
-		it( 'should return TRASH_POST action', () => {
-			const postId = 1;
-			const postType = 'post';
-			expect( trashPost( postId, postType ) ).toEqual( {
-				type: 'TRASH_POST',
-				postId,
-				postType,
 			} );
 		} );
 	} );

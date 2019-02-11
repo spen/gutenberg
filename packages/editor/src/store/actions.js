@@ -26,51 +26,6 @@ export function setupEditor( post, edits ) {
 }
 
 /**
- * Returns an action object used in signalling that the latest version of the
- * post has been received, either by initialization or save.
- *
- * @param {Object} post Post object.
- *
- * @return {Object} Action object.
- */
-export function resetPost( post ) {
-	return {
-		type: 'RESET_POST',
-		post,
-	};
-}
-
-/**
- * Returns an action object used in signalling that the latest autosave of the
- * post has been received, by initialization or autosave.
- *
- * @param {Object} post Autosave post object.
- *
- * @return {Object} Action object.
- */
-export function resetAutosave( post ) {
-	return {
-		type: 'RESET_AUTOSAVE',
-		post,
-	};
-}
-
-/**
- * Returns an action object used in signalling that a patch of updates for the
- * latest version of the post have been received.
- *
- * @param {Object} edits Updated post fields.
- *
- * @return {Object} Action object.
- */
-export function updatePost( edits ) {
-	return {
-		type: 'UPDATE_POST',
-		edits,
-	};
-}
-
-/**
  * Returns an action object used to setup the editor state when first opening an editor.
  *
  * @param {Object} post   Post object.
@@ -378,50 +333,6 @@ export function synchronizeTemplate() {
 }
 
 /**
- * Returns an action object used in signalling that attributes of the post have
- * been edited.
- *
- * @param {Object} edits Post attributes to edit.
- *
- * @return {Object} Action object.
- */
-export function editPost( edits ) {
-	return {
-		type: 'EDIT_POST',
-		edits,
-	};
-}
-
-/**
- * Returns an action object to save the post.
- *
- * @param {Object}  options          Options for the save.
- * @param {boolean} options.isAutosave Perform an autosave if true.
- *
- * @return {Object} Action object.
- */
-export function savePost( options = {} ) {
-	return {
-		type: 'REQUEST_POST_UPDATE',
-		options,
-	};
-}
-
-export function refreshPost() {
-	return {
-		type: 'REFRESH_POST',
-	};
-}
-
-export function trashPost( postId, postType ) {
-	return {
-		type: 'TRASH_POST',
-		postId,
-		postType,
-	};
-}
-
-/**
  * Returns an action object used in signalling that two blocks should be merged
  *
  * @param {string} firstBlockClientId  Client ID of the first block to merge.
@@ -434,17 +345,6 @@ export function mergeBlocks( firstBlockClientId, secondBlockClientId ) {
 		type: 'MERGE_BLOCKS',
 		blocks: [ firstBlockClientId, secondBlockClientId ],
 	};
-}
-
-/**
- * Returns an action object used in signalling that the post should autosave.
- *
- * @param {Object?} options Extra flags to identify the autosave.
- *
- * @return {Object} Action object.
- */
-export function autosave( options ) {
-	return savePost( { isAutosave: true, ...options } );
 }
 
 /**
@@ -754,33 +654,5 @@ export function enablePublishSidebar() {
 export function disablePublishSidebar() {
 	return {
 		type: 'DISABLE_PUBLISH_SIDEBAR',
-	};
-}
-
-/**
- * Returns an action object used to signal that post saving is locked.
- *
- * @param  {string} lockName The lock name.
- *
- * @return {Object} Action object
- */
-export function lockPostSaving( lockName ) {
-	return {
-		type: 'LOCK_POST_SAVING',
-		lockName,
-	};
-}
-
-/**
- * Returns an action object used to signal that post saving is unlocked.
- *
- * @param  {string} lockName The lock name.
- *
- * @return {Object} Action object
- */
-export function unlockPostSaving( lockName ) {
-	return {
-		type: 'UNLOCK_POST_SAVING',
-		lockName,
 	};
 }
