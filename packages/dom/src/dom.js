@@ -142,10 +142,10 @@ export function isHorizontalEdge( container, isReverse ) {
 		while (
 			next && (
 				( next.nodeType === TEXT_NODE && next.data === '' ) ||
-				( ! isReverse && next.nodeName === 'BR' && ! hadBR )
+				( next.nodeName === 'BR' && ! hadBR )
 			)
 		) {
-			if ( ! isReverse && next.nodeName === 'BR' ) {
+			if ( next.nodeName === 'BR' ) {
 				hadBR = true;
 			}
 
