@@ -497,15 +497,7 @@ export class RichText extends Component {
 			return;
 		}
 
-		const empty = this.isEmpty();
-
-		// It is important to consider emptiness because an empty container
-		// will include a padding BR node _after_ the caret, so in a forward
-		// deletion the isHorizontalEdge function will incorrectly interpret the
-		// presence of the BR node as not being at the edge.
-		const isEdge = ( empty || isHorizontalEdge( this.editableRef, isReverse ) );
-
-		if ( ! isEdge ) {
+		if ( ! isHorizontalEdge( this.editableRef, isReverse ) ) {
 			return;
 		}
 
@@ -517,7 +509,7 @@ export class RichText extends Component {
 		// an intentional user interaction distinguishing between Backspace and
 		// Delete to remove the empty field, but also to avoid merge & remove
 		// causing destruction of two fields (merge, then removed merged).
-		if ( onRemove && empty && isReverse ) {
+		if ( onRemove && this.isEmpty() && isReverse ) {
 			onRemove( ! isReverse );
 		}
 

@@ -134,9 +134,21 @@ export function isHorizontalEdge( container, isReverse ) {
 
 	while ( node !== container ) {
 		let next = node[ `${ order }Sibling` ];
+		let hadBR;
 
-		// Skip over empty text nodes.
-		while ( next && next.nodeType === TEXT_NODE && next.data === '' ) {
+		// Skip over empty text nodes and at most one BR element if not checking
+		// the reverse. One BR element at the end is ok as it is invisible.
+		// `<p>test<br></p>` looks the same as `<p>test</p>`.
+		while (
+			next && (
+				( next.nodeType === TEXT_NODE && next.data === '' ) ||
+				( ! isReverse && next.nodeName === 'BR' && ! hadBR )
+			)
+		) {
+			if ( ! isReverse && next.nodeName === 'BR' ) {
+				hadBR = true;
+			}
+
 			next = next[ `${ order }Sibling` ];
 		}
 
