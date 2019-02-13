@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Using Plugins API Annotations Allows a block to be annotated 1`] = `
+"<!-- wp:paragraph -->
+<p>Paragraph to annotate</p>
+<!-- /wp:paragraph -->"
+`;
+
+exports[`Using Plugins API Annotations Grows when typing inside it 1`] = `
+"<!-- wp:paragraph -->
+<p>AB2C</p>
+<!-- /wp:paragraph -->"
+`;
+
+exports[`Using Plugins API Annotations Keeps the cursor in the same location when applying annotation 1`] = `
+"<!-- wp:paragraph -->
+<p>ABCD</p>
+<!-- /wp:paragraph -->"
+`;
+
+exports[`Using Plugins API Annotations Moves when typing before it 1`] = `
+"<!-- wp:paragraph -->
+<p>A1BC</p>
+<!-- /wp:paragraph -->"
+`;

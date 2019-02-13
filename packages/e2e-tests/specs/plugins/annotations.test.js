@@ -6,13 +6,8 @@ import {
 	clickOnMoreMenuItem,
 	createNewPost,
 	deactivatePlugin,
+	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
-
-const clickOnBlockSettingsMenuItem = async ( buttonLabel ) => {
-	await expect( page ).toClick( '.editor-block-settings-menu__toggle' );
-	const itemButton = ( await page.$x( `//*[contains(@class, "editor-block-settings-menu__popover")]//button[contains(text(), '${ buttonLabel }')]` ) )[ 0 ];
-	await itemButton.click();
-};
 
 const ANNOTATIONS_SELECTOR = '.annotation-text-e2e-tests';
 
@@ -74,18 +69,6 @@ describe( 'Using Plugins API', () => {
 		return await page.evaluate( ( el ) => el.innerText, annotation );
 	}
 
-	/**
-	 * Returns the inner HTML of the first RichText in the page.
-	 *
-	 * @return {Promise<string>} Inner HTML.
-	 */
-	async function getRichTextInnerHTML() {
-		const htmlContent = await page.$$( '*[contenteditable]' );
-		return await page.evaluate( ( el ) => {
-			return el.innerHTML;
-		}, htmlContent[ 0 ] );
-	}
-
 	describe( 'Annotations', () => {
 		it( 'Allows a block to be annotated', async () => {
 			await page.keyboard.type( 'Title' + '\n' + 'Paragraph to annotate' );
@@ -103,15 +86,8 @@ describe( 'Using Plugins API', () => {
 			const text = await getAnnotatedText();
 			expect( text ).toBe( ' to ' );
 
-			await clickOnBlockSettingsMenuItem( 'Edit as HTML' );
-
-			const htmlContent = await page.$$( '.editor-block-list__block-html-textarea' );
-			const html = await page.evaluate( ( el ) => {
-				return el.innerHTML;
-			}, htmlContent[ 0 ] );
-
 			// There should be no <mark> tags in the raw content.
-			expect( html ).toBe( '&lt;p&gt;Paragraph to annotate&lt;/p&gt;' );
+			expect( await getEditedPostContent() ).toMatchSnapshot();
 		} );
 
 		it( 'Keeps the cursor in the same location when applying annotation', async () => {
@@ -124,12 +100,8 @@ describe( 'Using Plugins API', () => {
 			await page.keyboard.type( 'D' );
 
 			await removeAnnotations();
-			const htmlContent = await page.$$( '*[contenteditable]' );
-			const html = await page.evaluate( ( el ) => {
-				return el.innerHTML;
-			}, htmlContent[ 0 ] );
 
-			expect( html ).toBe( 'ABCD' );
+			expect( await getEditedPostContent() ).toMatchSnapshot();
 		} );
 
 		it( 'Moves when typing before it', async () => {
@@ -150,8 +122,8 @@ describe( 'Using Plugins API', () => {
 			expect( annotatedText ).toBe( 'B' );
 
 			await removeAnnotations();
-			const blockText = await getRichTextInnerHTML();
-			expect( blockText ).toBe( 'A1BC' );
+
+			expect( await getEditedPostContent() ).toMatchSnapshot();
 		} );
 
 		it( 'Grows when typing inside it', async () => {
@@ -170,8 +142,8 @@ describe( 'Using Plugins API', () => {
 			expect( annotatedText ).toBe( 'B2' );
 
 			await removeAnnotations();
-			const blockText = await getRichTextInnerHTML();
-			expect( blockText ).toBe( 'AB2C' );
+
+			expect( await getEditedPostContent() ).toMatchSnapshot();
 		} );
 	} );
 } );
