@@ -80,6 +80,14 @@ function getDeepestActiveFormat( value ) {
 	return activeFormats[ selectedFormat - 1 ];
 }
 
+const padding = {
+	type: 'br',
+	attributes: {
+		'data-rich-text-padding': 'true',
+	},
+	object: true,
+};
+
 export function toTree( {
 	value,
 	multilineTag,
@@ -135,6 +143,19 @@ export function toTree( {
 		}
 
 		let pointer = getLastChild( tree );
+
+		if ( character === LINE_SEPARATOR ) {
+			let node = pointer;
+
+			while ( ! isText( node ) ) {
+				node = getLastChild( node );
+			}
+
+			if ( isEditableTree ) {
+				append( getParent( node ), padding );
+				append( getParent( node ), '' );
+			}
+		}
 
 		// Set selection for the start of line.
 		if ( lastCharacter === LINE_SEPARATOR ) {
@@ -230,6 +251,10 @@ export function toTree( {
 
 		if ( onEndIndex && end === i + 1 ) {
 			onEndIndex( tree, pointer );
+		}
+
+		if ( i === text.length && isEditableTree ) {
+			append( getParent( pointer ), padding );
 		}
 
 		lastCharacterFormats = characterFormats;
