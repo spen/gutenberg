@@ -19,6 +19,10 @@ async function getInnerHTML( selector ) {
 	return await page.$eval( selector, ( element ) => element.innerHTML );
 }
 
+async function getInnerText( selector ) {
+	return await page.$eval( selector, ( element ) => element.textContent );
+}
+
 async function getBackgroundColor( selector ) {
 	return await page.$eval( selector, ( element ) => {
 		return window.getComputedStyle( element ).backgroundColor;
@@ -75,7 +79,7 @@ describe( 'Correctly Renders Block Icons on Inserter and Inspector', () => {
 		it( 'Can insert the block', async () => {
 			await insertBlock( blockTitle );
 			expect(
-				await getInnerHTML( `[data-type="${ blockName }"] [data-type="core/paragraph"] p` )
+				await getInnerText( `[data-type="${ blockName }"] [data-type="core/paragraph"] p` )
 			).toEqual( blockTitle );
 		} );
 
