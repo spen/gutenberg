@@ -1,6 +1,6 @@
 /**
- * External dependencies
- */
+* External dependencies
+*/
 const path = require( 'path' );
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -17,7 +17,16 @@ module.exports = {
 			{
 				test: /.js$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader',
+				use: [ {
+					loader: 'babel-loader',
+					options: {
+						plugins: [
+							[ '@babel/plugin-transform-react-jsx', {
+								pragma: 'wp.element.createElement',
+							} ],
+						],
+					},
+				} ],
 			},
 		],
 	},
