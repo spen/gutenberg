@@ -13,7 +13,7 @@
  * @return string Returns the block content.
  */
 function render_block_core_calendar( $attributes ) {
-	global $monthnum, $year, $post;
+	global $monthnum, $year;
 	$previous_monthnum = $monthnum;
 	$previous_year     = $year;
 
