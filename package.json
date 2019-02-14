@@ -11,6 +11,7 @@
 		"editor"
 	],
 	"dependencies": {
+		"@babel/plugin-transform-react-jsx": "7.3.0",
 		"@wordpress/a11y": "file:packages/a11y",
 		"@wordpress/annotations": "file:packages/annotations",
 		"@wordpress/api-fetch": "file:packages/api-fetch",
@@ -49,7 +50,8 @@
 		"@wordpress/token-list": "file:packages/token-list",
 		"@wordpress/url": "file:packages/url",
 		"@wordpress/viewport": "file:packages/viewport",
-		"@wordpress/wordcount": "file:packages/wordcount"
+		"@wordpress/wordcount": "file:packages/wordcount",
+		"pnp-webpack-plugin": "1.2.1"
 	},
 	"devDependencies": {
 		"@babel/core": "7.0.0",
