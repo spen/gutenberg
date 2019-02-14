@@ -89,16 +89,55 @@ class WP_REST_Widget_Updater_Controller extends WP_REST_Controller {
 
 		$instance_changes = $request->get_param( 'instance_changes' );
 		if ( null !== $instance_changes ) {
-			$instance = $widget_obj->update( $instance_changes, $instance );
-			// TODO: apply required filters.
+			$old_instance = $instance;
+			$instance     = $widget_obj->update( $instance_changes, $old_instance );
+			/**
+			 * Filters a widget's settings before saving.
+			 *
+			 * Returning false will effectively short-circuit the widget's ability
+			 * to update settings. The old setting will be returned.
+			 *
+			 * @since 2.8.0
+			 *
+			 * @param array     $instance         The current widget instance's settings.
+			 * @param array     $instance_changes Array of new widget settings.
+			 * @param array     $old_instance     Array of old widget settings.
+			 * @param WP_Widget $widget_ob        The widget instance.
+			 */
+			$instance = apply_filters( 'widget_update_callback', $instance, $instance_changes, $old_instance, $widget_obj );
+			if ( false === $instance ) {
+				$instance = $old_instance;
+			}
 		}
 
-		$widget_obj->form( $instance );
-		// TODO: apply required filters.
+		$instance = apply_filters( 'widget_form_callback', $instance, $widget_obj );
+
+		$return = null;
+		if ( false !== $instance ) {
+			$return = $widget_obj->form( $instance );
+
+			/**
+			 * Fires at the end of the widget control form.
+			 *
+			 * Use this hook to add extra fields to the widget form. The hook
+			 * is only fired if the value passed to the 'widget_form_callback'
+			 * hook is not false.
+			 *
+			 * Note: If the widget has no form, the text echoed from the default
+			 * form method can be hidden using CSS.
+			 *
+			 * @since 2.8.0
+			 *
+			 * @param WP_Widget $widget_obj     The widget instance (passed by reference).
+			 * @param null      $return   Return null if new fields are added.
+			 * @param array     $instance An array of the widget's settings.
+			 */
+			do_action_ref_array( 'in_widget_form', array( &$widget_obj, &$return, $instance ) );
+		}
 
 		$id_base = $widget_obj->id_base;
-		$id = $widget_obj->id;
-		$form = ob_get_clean();
+		$id      = $widget_obj->id;
+		$form    = ob_get_clean();
 
 		return rest_ensure_response(
 			array(
