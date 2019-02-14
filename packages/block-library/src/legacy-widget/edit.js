@@ -100,19 +100,18 @@ class LegacyWidgetEdit extends Component {
 						{ widgetObject.description }
 					</PanelBody>
 				</InspectorControls>
-				{ ! isPreview && (
-					<WidgetEditHandler
-						identifier={ attributes.identifier }
-						instance={ attributes.instance }
-						onInstanceChange={
-							( newInstance ) => {
-								this.props.setAttributes( {
-									instance: newInstance,
-								} );
-							}
+				<WidgetEditHandler
+					isVisible={ ! isPreview }
+					identifier={ attributes.identifier }
+					instance={ attributes.instance }
+					onInstanceChange={
+						( newInstance ) => {
+							this.props.setAttributes( {
+								instance: newInstance,
+							} );
 						}
-					/>
-				) }
+					}
+				/>
 				{ isPreview && (
 					<ServerSideRender
 						className="wp-block-legacy-widget__preview"

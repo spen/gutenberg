@@ -47,9 +47,11 @@ function the_gutenberg_project() {
 		</div>
 		<?php
 		/** This action is documented in wp-admin/admin-footer.php */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		do_action( 'admin_print_footer_scripts-widgets.php' );
 
 		/** This action is documented in wp-admin/admin-footer.php */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		do_action( 'admin_footer-widgets.php' );
 		?>
 	</div>
@@ -220,7 +222,9 @@ function gutenberg_init( $return, $post ) {
 	 */
 	remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	do_action( 'admin_print_styles-widgets.php' );
+	// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 	do_action( 'admin_print_scripts-widgets.php' );
 
 	/*

@@ -5,8 +5,10 @@ import { Component } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { withInstanceId } from '@wordpress/compose';
-import { Button } from '@wordpress/components';
 
+/**
+ * Internal dependencies
+ */
 import WidgetEditDomManager from './WidgetEditDomManager';
 
 class WidgetEditHandler extends Component {
@@ -17,7 +19,7 @@ class WidgetEditHandler extends Component {
 			idBase: null,
 		};
 		this.instanceUpdating = null;
-		this.updateWidget = this.updateWidget.bind( this );
+		this.onInstanceChange = this.onInstanceChange.bind( this );
 		this.requestWidgetUpdater = this.requestWidgetUpdater.bind( this );
 	}
 
@@ -52,35 +54,35 @@ class WidgetEditHandler extends Component {
 			return null;
 		}
 		return (
-			<div className="wp-block-legacy-widget__edit-container">
+			<div
+				className="wp-block-legacy-widget__edit-container"
+				// Display none is used because when we switch from edit to preview,
+				// we don't want to unmounted component.
+				// Otherwise when we went back to edit again we wound need to trigger again
+				// all widgets events and some scripts may not deal well with this.
+				style={ {
+					display: this.props.isVisible ? 'block' : 'none',
+				} }
+			>
 				<WidgetEditDomManager
 					ref={ ( ref ) => {
 						this.widgetEditDomManagerRef = ref;
 					} }
+					onInstanceChange={ this.onInstanceChange }
 					widgetNumber={ instanceId * -1 }
 					id={ id }
 					idBase={ idBase }
 					form={ form }
 				/>
-				<Button
-					className="wp-block-legacy-widget__update-button"
-					isLarge
-					onClick={ this.updateWidget }
-				>
-					{ __( 'Update' ) }
-				</Button>
 			</div>
 		);
 	}
 
-	updateWidget() {
-		if ( this.widgetEditDomManagerRef ) {
-			const instanceChanges = this.widgetEditDomManagerRef.retrieveUpdatedInstance();
-			this.requestWidgetUpdater( instanceChanges, ( response ) => {
-				this.instanceUpdating = response.instance;
-				this.props.onInstanceChange( response.instance );
-			} );
-		}
+	onInstanceChange( instanceChanges ) {
+		this.requestWidgetUpdater( instanceChanges, ( response ) => {
+			this.instanceUpdating = response.instance;
+			this.props.onInstanceChange( response.instance );
+		} );
 	}
 
 	requestWidgetUpdater( instanceChanges, callback ) {

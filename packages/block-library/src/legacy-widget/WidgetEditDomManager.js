@@ -7,6 +7,7 @@ import { includes } from 'lodash';
  * WordPress dependencies
  */
 import { Component, createRef } from '@wordpress/element';
+import isShallowEqual from '@wordpress/is-shallow-equal';
 
 class WidgetEditDomManager extends Component {
 	constructor() {
@@ -20,6 +21,9 @@ class WidgetEditDomManager extends Component {
 
 	componentDidMount() {
 		this.triggerWidgetEvent( 'widget-added' );
+		this.previousFormData = new window.FormData(
+			this.formRef.current
+		);
 	}
 
 	shouldComponentUpdate( nextProps ) {
@@ -29,6 +33,9 @@ class WidgetEditDomManager extends Component {
 			const widgetContent = this.widgetContentRef.current;
 			widgetContent.innerHTML = nextProps.form;
 			this.triggerWidgetEvent( 'widget-updated' );
+			this.previousFormData = new window.FormData(
+				this.formRef.current
+			);
 		}
 		return false;
 	}
@@ -42,7 +49,11 @@ class WidgetEditDomManager extends Component {
 						ref={ this.formRef }
 						method="post"
 						onBlur={ () => {
-							//console.log( 'blur' );
+							if ( this.shouldTriggerInstanceUpdate() ) {
+								this.props.onInstanceChange(
+									this.retrieveUpdatedInstance()
+								);
+							}
 						} }
 					>
 						<div
@@ -59,6 +70,35 @@ class WidgetEditDomManager extends Component {
 				</div>
 			</div>
 		);
+	}
+
+	shouldTriggerInstanceUpdate() {
+		if ( ! this.formRef.current ) {
+			return false;
+		}
+		if ( ! this.previousFormData ) {
+			return true;
+		}
+		const currentFormData = new window.FormData(
+			this.formRef.current
+		);
+		const currentFormDataKeys = Array.from( currentFormData.keys() );
+		const previousFormDataKeys = Array.from( this.previousFormData.keys() );
+		if (
+			currentFormDataKeys.length !== previousFormDataKeys.length
+		) {
+			return true;
+		}
+		for ( const rawKey of currentFormDataKeys ) {
+			if ( ! isShallowEqual(
+				currentFormData.getAll( rawKey ),
+				this.previousFormData.getAll( rawKey )
+			) ) {
+				this.previousFormData = currentFormData;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	triggerWidgetEvent( event ) {
