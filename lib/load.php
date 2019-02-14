@@ -35,19 +35,24 @@ function gutenberg_reregister_core_block_types() {
 		return;
 	}
 
+	$block_names = array(
+		'archives.php'        => 'core/archives',
+		'block.php'           => 'core/block',
+		'calendar.php'        => 'core/calendar',
+		'categories.php'      => 'core/categories',
+		'latest-comments.php' => 'core/latest-comments',
+		'latest-posts.php'    => 'core/latest-posts',
+		'rss.php'             => 'core/rss',
+		'shortcode.php'       => 'core/shortcode',
+		'search.php'          => 'core/search',
+	);
+
 	$registry = WP_Block_Type_Registry::get_instance();
 
-	$files = scandir( $blocks_dir );
-	foreach ( $files as $file ) {
-		$parts = pathinfo( $file );
-
-		// Ignore all non-PHP files, subdirectories, path traversal.
-		if ( 'php' !== $parts['extension'] ) {
-			continue;
+	foreach ( $block_names as $file => $block_name ) {
+		if ( ! file_exists( $blocks_dir . $file ) ) {
+			return;
 		}
-
-		// Derive the assumed block name by file path.
-		$block_name = 'core/' . $parts['filename'];
 
 		if ( $registry->is_registered( $block_name ) ) {
 			$registry->unregister( $block_name );
