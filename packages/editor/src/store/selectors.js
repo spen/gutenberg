@@ -41,6 +41,7 @@ import { addQueryArgs } from '@wordpress/url';
  */
 import { PREFERENCES_DEFAULTS } from './defaults';
 import { EDIT_MERGE_PROPERTIES } from './constants';
+import { cleanForSlug } from '../utils/url';
 
 /***
  * Module constants
@@ -2207,6 +2208,40 @@ export function getPermalink( state ) {
 	}
 
 	return prefix;
+}
+
+/**
+ * Returns the slug for the post being edited, preferring a manually edited
+ * value if one exists. It falls back to an auto-generated value returned from
+ * an autosave, then to a sanitized version of the current post title, and
+ * finally to the post ID.
+ *
+ * @param {Object} state Editor state.
+ *
+ * @return {string} The current slug to be displayed in the editor
+ */
+export function getEditedPostSlug( state ) {
+	const currentSlug = getEditedPostAttribute( state, 'slug' );
+
+	if ( currentSlug ) {
+		return currentSlug;
+	}
+
+	// If there is no saved or edited slug and the title has not been edited,
+	// then there may be a php generated slug available on the current_post.
+	// isSaving check is required because the title edit is cleared before the
+	// generated_slug value is set from the response.
+	const { postName } = getPermalinkParts( state );
+	if ( ! isCurrentPostPublished( state ) &&
+		getCurrentPostAttribute( state, 'title' ) === getEditedPostAttribute( state, 'title' ) &&
+		postName !== 'auto-draft' &&
+		! isSavingPost( state ) ) {
+		return postName;
+	}
+
+	return getAutosaveAttribute( state, 'generated_slug' ) ||
+		cleanForSlug( getEditedPostAttribute( state, 'title' ) ) ||
+		getCurrentPostId( state );
 }
 
 /**
