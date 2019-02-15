@@ -30,7 +30,7 @@ require dirname( __FILE__ ) . '/demo.php';
  */
 function gutenberg_reregister_core_block_types() {
 	// Blocks directory may not exist if working from a fresh clone.
-	$blocks_dir = dirname( __FILE__ ) . '/../build/block-library/blocks/';
+	$blocks_dir = dirname( __DIR__ ) . '/build/block-library/blocks/';
 	if ( ! file_exists( $blocks_dir ) ) {
 		return;
 	}
@@ -57,8 +57,7 @@ function gutenberg_reregister_core_block_types() {
 		if ( $registry->is_registered( $block_name ) ) {
 			$registry->unregister( $block_name );
 		}
-
 		require $blocks_dir . $file;
 	}
 }
-add_action( 'init', 'gutenberg_reregister_core_block_types' );
+add_action( 'init', 'gutenberg_reregister_core_block_types', 9 );
