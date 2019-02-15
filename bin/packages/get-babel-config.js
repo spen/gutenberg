@@ -8,11 +8,11 @@ const babel = require( '@babel/core' );
  * WordPress dependencies
  */
 const { options: babelDefaultConfig } = babel.loadPartialConfig( {
-	configFile: '@wordpress/babel-preset-default',
+	configFile: require.resolve( '@wordpress/babel-preset-default' ),
 } );
 const plugins = babelDefaultConfig.plugins;
 if ( ! process.env.SKIP_JSX_PRAGMA_TRANSFORM ) {
-	plugins.push( [ '@wordpress/babel-plugin-import-jsx-pragma', {
+	plugins.push( [ require.resolve( '@wordpress/babel-plugin-import-jsx-pragma' ), {
 		scopeVariable: 'createElement',
 		source: '@wordpress/element',
 		isDefault: false,
@@ -38,7 +38,7 @@ const babelConfigs = {
 			plugins,
 			presets: map(
 				babelDefaultConfig.presets,
-				( preset ) => overrideOptions( preset, '@babel/preset-env', {
+				( preset ) => overrideOptions( preset, require.resolve( '@babel/preset-env' ), {
 					modules: 'commonjs',
 				} )
 			),
@@ -50,13 +50,13 @@ const babelConfigs = {
 		{
 			plugins: map(
 				plugins,
-				( plugin ) => overrideOptions( plugin, '@babel/plugin-transform-runtime', {
+				( plugin ) => overrideOptions( plugin, require.resolve( '@babel/plugin-transform-runtime' ), {
 					useESModules: true,
 				} )
 			),
 			presets: map(
 				babelDefaultConfig.presets,
-				( preset ) => overrideOptions( preset, '@babel/preset-env', {
+				( preset ) => overrideOptions( preset, require.resolve( '@babel/preset-env' ), {
 					modules: false,
 				} )
 			),
