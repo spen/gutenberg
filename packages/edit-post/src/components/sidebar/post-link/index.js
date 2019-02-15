@@ -27,19 +27,16 @@ function PostLink( {
 	editPermalink,
 	forceEmptyField,
 	setState,
-	postTitle,
 	postSlug,
-	postID,
 } ) {
 	const { prefix, suffix } = permalinkParts;
 	let prefixElement, postNameElement, suffixElement;
-	const currentSlug = postSlug || cleanForSlug( postTitle ) || postID;
 	if ( isEditable ) {
 		prefixElement = prefix && (
 			<span className="edit-post-post-link__link-prefix">{ prefix }</span>
 		);
-		postNameElement = currentSlug && (
-			<span className="edit-post-post-link__link-post-name">{ currentSlug }</span>
+		postNameElement = postSlug && (
+			<span className="edit-post-post-link__link-post-name">{ postSlug }</span>
 		);
 		suffixElement = suffix && (
 			<span className="edit-post-post-link__link-suffix">{ suffix }</span>
@@ -56,7 +53,7 @@ function PostLink( {
 				<div className="editor-post-link">
 					<TextControl
 						label={ __( 'URL Slug' ) }
-						value={ forceEmptyField ? '' : currentSlug }
+						value={ forceEmptyField ? '' : postSlug }
 						onChange={ ( newValue ) => {
 							editPermalink( newValue );
 							// When we delete the field the permalink gets
@@ -122,6 +119,7 @@ export default compose( [
 			isCurrentPostPublished,
 			getPermalinkParts,
 			getEditedPostAttribute,
+			getEditedPostSlug,
 		} = select( 'core/editor' );
 		const {
 			isEditorPanelEnabled,
@@ -131,7 +129,7 @@ export default compose( [
 			getPostType,
 		} = select( 'core' );
 
-		const { link, id } = getCurrentPost();
+		const { link } = getCurrentPost();
 
 		const postTypeName = getEditedPostAttribute( 'type' );
 		const postType = getPostType( postTypeName );
@@ -145,9 +143,7 @@ export default compose( [
 			permalinkParts: getPermalinkParts(),
 			isEnabled: isEditorPanelEnabled( PANEL_NAME ),
 			isViewable: get( postType, [ 'viewable' ], false ),
-			postTitle: getEditedPostAttribute( 'title' ),
-			postSlug: getEditedPostAttribute( 'slug' ),
-			postID: id,
+			postSlug: getEditedPostSlug(),
 		};
 	} ),
 	ifCondition( ( { isEnabled, isNew, postLink, isViewable, permalinkParts } ) => {
