@@ -1293,6 +1293,7 @@ export function autosave( state = null, action ) {
 				title,
 				excerpt,
 				content,
+				generated_slug: post.generated_slug,
 			};
 	}
 
