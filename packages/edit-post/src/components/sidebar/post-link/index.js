@@ -113,7 +113,6 @@ function PostLink( {
 export default compose( [
 	withSelect( ( select ) => {
 		const {
-			isEditedPostNew,
 			isPermalinkEditable,
 			getCurrentPost,
 			isCurrentPostPublished,
@@ -135,7 +134,6 @@ export default compose( [
 		const postType = getPostType( postTypeName );
 
 		return {
-			isNew: isEditedPostNew(),
 			postLink: link,
 			isEditable: isPermalinkEditable(),
 			isPublished: isCurrentPostPublished(),
@@ -146,8 +144,8 @@ export default compose( [
 			postSlug: getEditedPostSlug(),
 		};
 	} ),
-	ifCondition( ( { isEnabled, isNew, postLink, isViewable, permalinkParts } ) => {
-		return isEnabled && ! isNew && postLink && isViewable && permalinkParts;
+	ifCondition( ( { isEnabled, postLink, isViewable, permalinkParts } ) => {
+		return isEnabled && postLink && isViewable && permalinkParts;
 	} ),
 	withDispatch( ( dispatch ) => {
 		const { toggleEditorPanelOpened } = dispatch( 'core/edit-post' );
