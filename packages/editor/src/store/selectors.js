@@ -2231,12 +2231,12 @@ export function getEditedPostSlug( state ) {
 	// then there may be a php generated slug available on the current_post.
 	// isSaving check is required because the title edit is cleared before the
 	// generated_slug value is set from the response.
-	const { postName } = getPermalinkParts( state );
+	const generatedSlug = getEditedPostAttribute( state, 'generated_slug' );
 	if ( ! isCurrentPostPublished( state ) &&
 		getCurrentPostAttribute( state, 'title' ) === getEditedPostAttribute( state, 'title' ) &&
-		postName !== 'auto-draft' &&
+		generatedSlug !== 'auto-draft' &&
 		! isSavingPost( state ) ) {
-		return postName;
+		return generatedSlug;
 	}
 
 	return getAutosaveAttribute( state, 'generated_slug' ) ||
