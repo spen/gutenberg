@@ -118,9 +118,7 @@ export class RichText extends Component {
 		this.savedContent = value;
 		this.patterns = getPatterns( {
 			onReplace,
-			onCreateUndoLevel: this.onCreateUndoLevel,
 			valueToFormat: this.valueToFormat,
-			onChange: this.onChange,
 		} );
 		this.enterPatterns = getBlockTransforms( 'from' )
 			.filter( ( { type } ) => type === 'enter' );
@@ -367,10 +365,7 @@ export class RichText extends Component {
 		}
 
 		let { selectedFormat } = this.state;
-		const { formats, text, start, end } = this.patterns.reduce(
-			( accumlator, transform ) => transform( accumlator ),
-			this.createRecord()
-		);
+		const { formats, text, start, end } = this.createRecord();
 
 		if ( this.formatPlaceholder ) {
 			formats[ this.state.start ] = formats[ this.state.start ] || [];
@@ -392,9 +387,21 @@ export class RichText extends Component {
 			delete formats[ this.state.start ];
 		}
 
-		this.onChange( { formats, text, start, end, selectedFormat }, {
+		const change = { formats, text, start, end, selectedFormat };
+
+		this.onChange( change, {
 			withoutHistory: true,
 		} );
+
+		const transformed = this.patterns.reduce(
+			( accumlator, transform ) => transform( accumlator ),
+			change
+		);
+
+		if ( transformed !== change ) {
+			this.onCreateUndoLevel();
+			this.onChange( { ...transformed, selectedFormat } );
+		}
 
 		// Create an undo level when input stops for over a second.
 		this.props.clearTimeout( this.onInput.timeout );
